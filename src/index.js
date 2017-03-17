@@ -1,7 +1,7 @@
 const ipcReceive = require('./ipcReceive');
 const ipcSend = require('./ipcSend');
 
-modules.exports = {
+module.exports = {
   ipcReceive,
   ipcSend
 }
