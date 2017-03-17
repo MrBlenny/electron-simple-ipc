@@ -1,15 +1,39 @@
 # electron-simple-ipc
 This standardises IPC in electron so it works the same in all threads.
 
+## Install
+`npm install electron-simple-ipc`
+
 ## Usage
-In either a renderer or main electron thread:
+Usage is the same in both the renderer/electron threads.
+
+For example:
+
+In electron:
 ```javascript
-ipcSend('SOME_EVENT_NAME', {
+const { ipcSend, ipcReceive } = require('electron-simple-ipc');
+
+ipcSend('EVENT_FROM_ELECTRON', {
   data1: 'some data in the event payload'
 })
 
-ipcReceive('SOME_EVENT_NAME', (payload) => {
+ipcReceive('EVENT_FROM_RENDERER', (payload) => {
   console.log('We process the payload here', payload);
 })
 
 ```
+
+In Renderer:
+```javascript
+const { ipcSend, ipcReceive } = require('electron-simple-ipc');
+
+ipcSend('EVENT_FROM_RENDERER', {
+  data1: 'some data in the event payload'
+})
+
+ipcReceive('EVENT_FROM_ELECTRON', (payload) => {
+  console.log('We process the payload here', payload);
+})
+
+```
+
