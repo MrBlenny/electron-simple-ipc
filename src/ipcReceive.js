@@ -20,7 +20,8 @@ if (process.type == 'renderer') {
     const { ipcRenderer } = require('electron');
 
     ipcReceive = (event, callback) => {
-        ipcRenderer.on(event, (event, payload) => {
+        ipcRenderer.on(event, (event, wrappedPayload) => {
+          const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
           callback(payload);
         })
     }
@@ -29,7 +30,8 @@ if (process.type == 'renderer') {
     const { ipcMain } = require('electron');
 
     ipcReceive = (event, callback) => {
-        ipcMain.on(event, (event, payload) => {
+        ipcMain.on(event, (event, wrappedPayload) => {
+          const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
           callback(payload);
         })
     }

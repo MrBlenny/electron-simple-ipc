@@ -1,5 +1,5 @@
 # electron-simple-ipc
-This standardises IPC in electron so it works the same in all threads.
+This standardises IPC in electron so it works the same in all threads. It will also JSON stringify/parse any objects send over IPC. This makes IPC much much faster.
 
 ## Install
 `npm install electron-simple-ipc`

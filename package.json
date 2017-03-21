@@ -1,6 +1,6 @@
 {
   "name": "electron-simple-ipc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Standardises IPC in electron so it works the same in all threads",
   "main": "src/index.js",
   "scripts": {

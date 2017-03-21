@@ -15,18 +15,40 @@ ipcSend('SOME_EVENT_NAME', {
 **************************************************/
 let ipcSend
 
+const getWrappedPayload = (payload) => {
+    // This will get the wrapped version of the payload.
+    // This will stringify the payload if it is an object.
+    
+    // Stringified payloads are much much faster than
+    // sending a large object.
+    if (payload !== null && typeof payload === 'object') {
+        return {
+            payload: JSON.stringify(payload),
+            isStringified: true
+        }
+    }
+    return {
+        payload
+    }
+};
+                
 if (process.type == 'renderer') {
     const { ipcRenderer } = require('electron');
 
-    ipcSend = ipcRenderer.send;
+    ipcSend = (event, payload) => {
+        const wrappedPayload = getWrappedPayload(payload);
+        ipcRenderer.send(event, wrappedPayload);
+    };
 
 } else {
     const { BrowserWindow } = require('electron');
 
     ipcSend = (event, payload) => {
+        const wrappedPayload = getWrappedPayload(payload);
         const openWindows = BrowserWindow.getAllWindows();
+        
         openWindows.forEach(({ webContents }) => {
-            webContents.send(event, payload);
+            webContents.send(event, wrappedPayload);
         });
     }
 }
