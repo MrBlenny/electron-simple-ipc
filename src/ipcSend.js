@@ -41,13 +41,12 @@ if (process.type == 'renderer') {
     };
 
 } else {
-    const { BrowserWindow } = require('electron');
+    const { webContents } = require('electron');
 
     ipcSend = (event, payload) => {
         const wrappedPayload = getWrappedPayload(payload);
-        const openWindows = BrowserWindow.getAllWindows();
         
-        openWindows.forEach(({ webContents }) => {
+        webContents.getAllWebContents().forEach(({ webContents }) => {
             webContents.send(event, wrappedPayload);
         });
     }
