@@ -37,3 +37,10 @@ ipcReceive('EVENT_FROM_ELECTRON', (payload) => {
 
 ```
 
+### Unsubscription
+```js
+const off = ipcReceive('EVENT_FROM_RENDERER', (payload) => {
+  console.log('We process the payload here', payload);
+})
+// once you're done with it:
+off()
