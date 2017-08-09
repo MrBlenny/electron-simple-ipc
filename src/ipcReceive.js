@@ -20,20 +20,26 @@ if (process.type == 'renderer') {
     const { ipcRenderer } = require('electron');
 
     ipcReceive = (event, callback) => {
-        ipcRenderer.on(event, (event, wrappedPayload) => {
-          const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
-          callback(payload);
-        })
+        const handler = (event, wrappedPayload) => {
+            const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
+            callback(payload);
+        }
+        ipcRenderer.on(event, handler)
+        const unsubscribe = () => ipcRenderer.removeListener(event, handler)
+        return unsubscribe
     }
 
 } else {
     const { ipcMain } = require('electron');
 
     ipcReceive = (event, callback) => {
-        ipcMain.on(event, (event, wrappedPayload) => {
-          const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
-          callback(payload);
-        })
+        const handler = (event, wrappedPayload) => {
+            const payload = wrappedPayload.isStringified ? JSON.parse(wrappedPayload.payload) : wrappedPayload.payload;
+            callback(payload);
+        }
+        ipcMain.on(event, handler)
+        const unsubscribe = () => ipcMain.removeListener(event, handler)
+        return unsubscribe
     }
 }
 
